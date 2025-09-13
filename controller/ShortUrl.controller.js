@@ -31,13 +31,38 @@ const NewShortUrl = async(req,res)=>{
         console.error(error)
         return res.status(500).json({err:"server side error"});
     }
-
-
-
-
-
 }
 
+
+
+const handelredirectUrl = async (req, res) => {
+    const shortId = req.params.shortid;
+
+    try {
+        if (!shortId) {
+            return res.json({ message: "Short id is missing" });
+        }
+
+        const entry = await Url.findOneAndUpdate(
+            { shortId },
+            {
+                $push: {
+                    visitHistory: { timestamp: Date.now() }
+                }
+            },
+            { new: true }
+        );
+
+        if (!entry) {
+            return res.status(404).json({ err: "Entry not found" });
+        }
+
+        return res.redirect(entry.originalUrl);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
 
 
 
@@ -47,6 +72,7 @@ module.exports=
 {
     GetAllShortUrl,
     NewShortUrl,
+    handelredirectUrl
 }
 
 

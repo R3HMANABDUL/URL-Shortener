@@ -22,35 +22,34 @@ app.use(express.static('public'));
 
 // Route Middleware
 app.use('/api/url',UrlShortnerRoute)
+// app.get('/api/url/:shortid', async (req, res) => {
+//     const shortId = req.params.shortid;
 
-app.get('/api/url/:shortid', async (req, res) => {
-    const shortId = req.params.shortid;
+//     try {
+//         if (!shortId) {
+//             return res.json({ message: "Short id is missing" });
+//         }
 
-    try {
-        if (!shortId) {
-            return res.json({ message: "Short id is missing" });
-        }
+//         const entry = await Url.findOneAndUpdate(
+//             { shortId },
+//             {
+//                 $push: {
+//                     visitHistory: { timestamp: Date.now() }
+//                 }
+//             },
+//             { new: true }
+//         );
 
-        const entry = await Url.findOneAndUpdate(
-            { shortId },
-            {
-                $push: {
-                    visitHistory: { timestamp: Date.now() }
-                }
-            },
-            { new: true }
-        );
+//         if (!entry) {
+//             return res.status(404).json({ err: "Entry not found" });
+//         }
 
-        if (!entry) {
-            return res.status(404).json({ err: "Entry not found" });
-        }
-
-        return res.redirect(entry.originalUrl);
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ err: "Server error" });
-    }
-});
+//         return res.redirect(entry.originalUrl);
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ err: "Server error" });
+//     }
+// });
 
 
 app.listen(port,()=>{
