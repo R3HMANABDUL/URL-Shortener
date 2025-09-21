@@ -63,11 +63,6 @@ const handelredirectUrl = async (req, res) => {
         return res.status(500).json({ err: "Server error" });
     }
 };
-
-
-
-
-
 module.exports=
 {
     GetAllShortUrl,

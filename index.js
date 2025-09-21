@@ -6,7 +6,8 @@ const path = require('path');
 const UrlShortnerRoute = require('./router/UrlShortner.route');
 const Url = require("./models/UrlShortmodel.js");
 const { timeStamp } = require('console');
-
+const UserRoute = require("./router/User.route.js")
+const auth = require("./MiddleWare/Auth.js")
 
 
 
@@ -21,6 +22,8 @@ app.use("./uploads",express.static(path.join(__dirname,'uploads')));
 app.use(express.static('public'));
 
 // Route Middleware
+app.use('/',UserRoute)
+app.use(auth)
 app.use('/api/url',UrlShortnerRoute)
 // app.get('/api/url/:shortid', async (req, res) => {
 //     const shortId = req.params.shortid;
